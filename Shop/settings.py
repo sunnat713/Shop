@@ -10,8 +10,7 @@ DEBUG = True
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
-    'django.contrib.sites',
-    'registration',
+    # 'registration',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -108,12 +107,15 @@ CKEDITOR_CONFIGS = {
     },
 }
 
-ACCOUNT_ACTIVATION_DAYS = 7
-
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-
-EMAIL_HOST_USER = 'yoorusername@gmail.com'
-EMAIL_HOST_PASSWORD = 'key'
+# ACCOUNT_ACTIVATION_DAYS = 7
+# REGISTRATION_AUTO_LOGIN = True
+#
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+#
+# EMAIL_HOST_USER = 'sunnatsunnatov6041@gmail.com'
+# EMAIL_HOST_PASSWORD = 'sunnat6041'
+#
+# REGISTRATION_EMAIL_HTML = True

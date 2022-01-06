@@ -1,7 +1,6 @@
 from datetime import datetime
 
 import pytz
-import pytz as pytz
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
 from ckeditor_uploader.fields import RichTextUploadingField

@@ -1,7 +1,8 @@
 {% extends 'layouts/base.html' %}
 {% load static %}
 {% block content %}
-
+    {% block extra_css %}
+    {% endblock %}
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
         <div class="container">
@@ -31,6 +32,9 @@
                                 <input name="q" value="{{ request.GET.q }}" type="text" placeholder="Search...">
                                 <button type="submit"><span class="icon_search"></span></button>
                             </form>
+                            <div class="my-2">
+                                <a href="{% url 'products:list' %}" class="text-dark">Clear Filter</a>
+                            </div>
                         </div>
                         <div class="shop__sidebar__accordion">
                             <div class="accordion" id="accordionExample">
@@ -43,7 +47,11 @@
                                             <div class="shop__sidebar__categories">
                                                 <ul class="nice-scroll">
                                                     {% for category in categories %}
-                                                        <li><a href="?cat={{ category.pk }}">{{ category.title }}</a></li>
+                                                        <li style="cursor: pointer"><a
+                                                                {% if request.GET.cat == category.pk|stringformat:'i' %}
+                                                                    style="color: #111; font-weight: bold;background-color:white"{% endif %}
+                                                                    onclick="addUrlParameter('cat', '{{ category.pk }}')">{{ category.title }}</a>
+                                                        </li>
                                                     {% endfor %}
                                                 </ul>
                                             </div>
@@ -59,7 +67,11 @@
                                             <div class="shop__sidebar__brand">
                                                 <ul>
                                                     {% for brand in brands %}
-                                                        <li><a href="?brand={{ brand.pk }}">{{ brand.title }}</a></li>
+                                                        <li style="cursor: pointer"><a
+                                                                {% if request.GET.brand == brand.pk|stringformat:'i' %}
+                                                                    style="color: black; font-weight: bold"{% endif %}
+                                                                    onclick="addUrlParameter('brand', '{{ brand.pk }}')">{{ brand.title }}</a>
+                                                        </li>
                                                     {% endfor %}
                                                 </ul>
                                             </div>
@@ -74,7 +86,9 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__tags">
                                                 {% for tag in tags %}
-                                                    <a href="?tag={{ tag.pk }}">{{tag.title}}</a>
+                                                    <a href="#" {% if request.GET.tag == tag.pk|stringformat:'i' %}
+                                                       style="color: white;background-color:#111"{% endif %}
+                                                       onclick="addUrlParameter('tag', '{{ tag.pk }}')">{{ tag.title }}</a>
                                                 {% endfor %}
                                             </div>
                                         </div>
@@ -181,7 +195,8 @@
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-6">
                                 <div class="shop__product__option__left">
-                                    <p>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }} of {{ page_obj.paginator.count }}</p>
+                                    <p>Showing {{ page_obj.start_index }}-{{ page_obj.end_index }}
+                                        of {{ page_obj.paginator.count }}</p>
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-6">
@@ -250,7 +265,7 @@
                         <div class="col-lg-12">
                             <div class="product__pagination">
                                 {% for page in page_obj.paginator.page_range %}
-                                <a class="active" href="?page={{ page }}">{{ page }}</a>
+                                    <a class="active" href="?page={{ page }}">{{ page }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -260,4 +275,17 @@
         </div>
     </section>
     <!-- Shop Section End -->
+{% endblock %}
+{% block extra_js %}
+    <script>
+        function addUrlParameter(name, value) {
+            let searchParams = new URLSearchParams(window.location.search)
+            if (searchParams.has(name) && searchParams.get(name) === value ) {
+                searchParams.delete(name)
+            } else {
+                searchParams.set(name, value)
+            }
+            window.location.search = searchParams.toString()
+        }
+    </script>
 {% endblock %}

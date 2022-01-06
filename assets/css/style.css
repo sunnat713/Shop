@@ -2090,6 +2090,11 @@ ol {
   Breadcrumb Blog
 -----------------------*/
 
+
+.cursor{
+    cursor: pointer;
+}
+
 .breadcrumb-blog {
     text-align: center;
     display: -webkit-box;
