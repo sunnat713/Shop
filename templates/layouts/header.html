@@ -1,19 +1,69 @@
-{% load static %}
+{% load static i18n mytags %}
+<!-- Header Section Begin -->
+
+<!-- Offcanvas Menu Begin -->
+<div class="offcanvas-menu-overlay"></div>
+<div class="offcanvas-menu-wrapper">
+    <div class="offcanvas__option">
+        <div class="offcanvas__links">
+            <a href="#">{% translate 'Sign in' %}</a>
+            <a href="#">{% translate 'FAQs' %}</a>
+        </div>
+        <div class="offcanvas__top__hover">
+              {% get_current_language as lang %}
+                            <span>{{ lang }} <i class="arrow_carrot-down"></i></span>
+                            <ul>
+                                {% get_available_languages as al %}
+                                {% for l in al %}
+                                    {% if l.0 != lang %}
+                                        <li>
+                                            <a style="color: #111; text-decoration: none"
+                                               href="{% get_lang_url request l.0 %}">{{ l.1 }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+        </div>
+    </div>
+    <div class="offcanvas__nav__option">
+        <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+        <a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
+        <a href="#"><img src="{% static 'img/icon/cart.png' %}" alt=""> <span>0</span></a>
+        <div class="price">$0.00</div>
+    </div>
+    <div id="mobile-menu-wrap"></div>
+    <div class="offcanvas__text">
+    </div>
+</div>
+<!-- Offcanvas Menu End -->
+
 <!-- Header Section Begin -->
 <header class="header">
     <div class="header__top">
         <div class="container">
             <div class="row">
+                <div class="col-lg-6 col-md-7">
+                    <div class="header__top__left">
+                    </div>
+                </div>
                 <div class="col-lg-6 col-md-5">
                     <div class="header__top__right">
                         <div class="header__top__links">
-                            <a href="#">Sign in</a>
+                            <a href="#">{% translate 'Sign in' %}</a>
                         </div>
                         <div class="header__top__hover">
-                            <span>EN <i class="arrow_carrot-down"></i></span>
+                            {% get_current_language as lang %}
+                            <span>{{ lang }} <i class="arrow_carrot-down"></i></span>
                             <ul>
-                                <li>RU</li>
-                                <li>UZ</li>
+                                {% get_available_languages as al %}
+                                {% for l in al %}
+                                    {% if l.0 != lang %}
+                                        <li>
+                                            <a style="color: #111; text-decoration: none"
+                                               href="{% get_lang_url request l.0 %}">{{ l.1 }}</a>
+                                        </li>
+                                    {% endif %}
+                                {% endfor %}
                             </ul>
                         </div>
                     </div>
@@ -25,31 +75,33 @@
         <div class="row">
             <div class="col-lg-3 col-md-3">
                 <div class="header__logo">
-                    <a href="{% url 'pages:home' %}"><img src="{% static 'img/logo.png' %}" alt=""></a>
+                    <a href="{% url 'pages:home' %}">
+                        <img src="{% static 'img/logo.png' %}" alt="">
+                    </a>
                 </div>
             </div>
-            <div class="col-lg-6 col-md-6">
+            <div class="col-lg-7 col-md-7">
                 <nav class="header__menu mobile-menu">
-                    <ul class="d-flex">
-                        <li {% if request.path == '/' %} class="active" {% endif %}>
-                            <a href="{% url 'pages:home' %}">Home</a>
+                    <ul class="d-flex navbar">
+                        <li class="nav-item {% if request.path == '/' %} active {% endif %}">
+                            <a href="{% url 'pages:home' %}">{% translate 'Home' %}</a>
                         </li>
-                        <li {% if request.path == '/products/' %} class="active" {% endif %}>
-                            <a href="{% url 'products:list' %}">Products</a>
+                        <li class="nav-item {% if request.path == '/products/' %}active{% endif %}">
+                            <a href="{% url 'products:list' %}">{% translate 'Products' %}</a>
                         </li>
-                        <li {% if request.path == '/blog/' %} class="active" {% endif %}>
-                            <a href="{% url 'posts:list' %}">Blog</a>
+                        <li class="nav-item {% if request.path == '/blog/' %} active {% endif %}">
+                            <a href="{% url 'posts:list' %}">{% translate 'Blog' %}</a>
                         </li>
-                        <li {% if request.path == '/about/' %} class="active" {% endif %}>
-                            <a href="{% url 'pages:about' %}">About</a>
+                        <li class="nav-item {% if request.path == '/about/' %} active{% endif %}">
+                            <a href="{% url 'pages:about' %}">{% translate 'About' %}</a>
                         </li>
-                        <li {% if request.path == '/contact/' %} class="active" {% endif %}>
-                            <a href="{% url 'pages:contact' %}">Contact</a>
+                        <li class="nav-item {% if request.path == '/contact/' %} active {% endif %}">
+                            <a href="{% url 'pages:contact' %}">{% translate 'Contact' %}</a>
                         </li>
                     </ul>
                 </nav>
             </div>
-            <div class="col-lg-3 col-md-3">
+            <div class="col-lg-2 col-md-2">
                 <div class="header__nav__option">
                     <a href="#" class="search-switch"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
                     <a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>

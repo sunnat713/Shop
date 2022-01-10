@@ -1,5 +1,5 @@
 {% extends 'layouts/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block content %}
     <!-- Blog Details Hero Begin -->
@@ -94,21 +94,42 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="blog__details__comment">
+                        <div id="comment-section" class="row">
+                            <div class="col-md-12 col-sm-12">
+                                <ul>
+                                    {% for comment in object.get_comments %}
+                                    <li class="media">
+                                        <div class="media-body">
+                                            <span class="text-muted pull-right">
+                                                <small class="text-muted">
+                                                    {{ comment.created_at|timesince }}
+                                                </small>
+                                            </span>
+                                            <strong> {{ comment.name }}</strong>
+                                            <p>{{ comment.comment }}</p>
+                                        </div>
+                                    </li>
+                                        <hr>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="blog__details__comment mt-2">
                             <h4>Leave A Comment</h4>
-                            <form action="#">
+                            <form method="POST" action="{% url 'posts:comment' pk=object.pk %}">
+                                {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Name">
+                                        <input name="name" type="text" placeholder="{% translate 'Name' %}">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Email">
+                                        <input name="email" type="email" placeholder="{% translate 'Email' %}">
                                     </div>
                                     <div class="col-lg-4 col-md-4">
-                                        <input type="text" placeholder="Phone">
+                                        <input name="phone" type="text" placeholder="{% translate 'Phone' %}">
                                     </div>
                                     <div class="col-lg-12 text-center">
-                                        <textarea placeholder="Comment"></textarea>
+                                        <textarea name="comment" placeholder="{% translate 'Comment' %}"></textarea>
                                         <button type="submit" class="site-btn">Post Comment</button>
                                     </div>
                                 </div>

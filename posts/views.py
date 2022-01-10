@@ -1,6 +1,8 @@
-from django.shortcuts import render
-from django.views.generic import ListView, DetailView
+from django.shortcuts import get_object_or_404
+from django.urls import reverse
+from django.views.generic import ListView, DetailView, CreateView
 
+from .forms import CommentModelForm
 from .models import *
 
 
@@ -18,3 +20,14 @@ class PostsListView(ListView):
 class PostDetailView(DetailView):
     template_name = 'blog-details.html'
     model = PostModel
+
+
+class CommentCreateView(CreateView):
+    form_class = CommentModelForm
+
+    def form_valid(self, form):
+        form.instance.post = get_object_or_404(PostModel, pk=self.kwargs.get('pk'))
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('posts:detail', kwargs={'pk': self.kwargs.get('pk')})

@@ -1,40 +1,44 @@
 from django.db import models
 from ckeditor_uploader.fields import RichTextUploadingField
+from django.utils.translation import gettext_lazy as _
 
 
 class AuthorModel(models.Model):
-    name = models.CharField(max_length=50)
-    avatar = models.ImageField(upload_to='authors')
-    created_at = models.DateTimeField(auto_now_add=True)
+    name = models.CharField(max_length=50, verbose_name=_('name'))
+    avatar = models.ImageField(upload_to='authors', verbose_name=_('avatar'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = 'author'
-        verbose_name_plural = 'authors'
+        verbose_name = _('author')
+        verbose_name_plural = _('authors')
 
 
 class PostTagModel(models.Model):
-    title = models.CharField(max_length=20)
-    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=20, verbose_name=_('title'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
 
     def __str__(self):
         return self.title
 
     class Meta:
-        verbose_name = 'tag'
-        verbose_name_plural = 'tags'
+        verbose_name = _('tag')
+        verbose_name_plural = _('tags')
 
 
 class PostModel(models.Model):
-    title = models.CharField(max_length=512)
-    image = models.ImageField(upload_to='posts')
-    banner = models.ImageField(upload_to='post_banners')
-    content = RichTextUploadingField()
-    author = models.ForeignKey(AuthorModel, on_delete=models.PROTECT, related_name='posts')
-    tags = models.ManyToManyField(PostTagModel, related_name='posts')
-    created_at = models.DateTimeField(auto_now_add=True)
+    title = models.CharField(max_length=512, verbose_name=_('title'))
+    image = models.ImageField(upload_to='posts', verbose_name=_('image'))
+    banner = models.ImageField(upload_to='post_banners', verbose_name=_('banner'))
+    content = RichTextUploadingField(verbose_name=_('content'))
+    author = models.ForeignKey(AuthorModel, on_delete=models.PROTECT, related_name='posts', verbose_name=_('author'))
+    tags = models.ManyToManyField(PostTagModel, related_name='posts', verbose_name=_('tags'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+
+    def get_comments(self):
+        return self.comments.order_by('-created_at')
 
     def get_prev(self):
         return self.get_previous_by_created_at()
@@ -46,5 +50,24 @@ class PostModel(models.Model):
         return self.title
 
     class Meta:
-        verbose_name = 'post'
-        verbose_name_plural = 'posts'
+        verbose_name = _('post')
+        verbose_name_plural = _('posts')
+
+
+class CommentModel(models.Model):
+    post = models.ForeignKey(
+        PostModel,
+        on_delete=models.CASCADE,
+        related_name='comments', verbose_name=_('post'))
+    name = models.CharField(max_length=50, verbose_name=_('name'))
+    email = models.EmailField(verbose_name=_('email'))
+    phone = models.CharField(max_length=15, null=True, verbose_name=_('phone'))
+    comment = models.TextField(verbose_name=_('comment'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _('comment')
+        verbose_name_plural = _('comments')

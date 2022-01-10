@@ -14,6 +14,13 @@ class ProductsListView(ListView):
         cat = self.request.GET.get('cat')
         brand = self.request.GET.get('brand')
         tag = self.request.GET.get('tag')
+        sort = self.request.GET.get('sort')
+        if sort:
+            if sort == 'price':
+                qs = sorted(qs, key=lambda i: i.get_price())
+            elif sort == '-price':
+                qs = sorted(qs, key=lambda i: i.get_price(), reverse=True)
+
         if tag:
             qs = qs.filter(tags__id=tag)
 
