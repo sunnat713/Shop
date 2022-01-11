@@ -11,6 +11,11 @@ class CategoryModelAdmin(admin.ModelAdmin):
     search_fields = ['title']
 
 
+
+class ProductImageModelAdmin(admin.StackedInline):
+    model = ProductImageModel
+
+
 @admin.register(ProductTagModel)
 class ProductTagModelAdmin(admin.ModelAdmin):
     list_display = ['title', 'created_at']
@@ -46,3 +51,4 @@ class ProductModelAdmin(admin.ModelAdmin):
     list_filter = ['tags', 'brand', 'category', 'created_at']
     search_fields = ['title', 'short_description']
     autocomplete_fields = ['category', 'tags', 'brand', 'colors', 'sizes']
+    inlines = [ProductImageModelAdmin]

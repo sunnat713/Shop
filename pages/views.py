@@ -11,7 +11,6 @@ class HomeTemplateView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-
         context['posts'] = PostModel.objects.order_by('-pk')[:3]
         context['products'] = ProductModel.objects.order_by('-pk')[:4]
         return context

@@ -12,7 +12,7 @@
                         <ul>
                             <li>By {{ object.author.name }}</li>
                             <li>{{ object.created_at|date:"F d, Y" }}</li>
-                            <li>8 Comments</li>
+                            <li>{{ object.comments.count }} Comments</li>
                         </ul>
                     </div>
                 </div>
@@ -72,7 +72,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="blog__details__btns">
+                        <div id="comment-section"  class="blog__details__btns">
                             <div class="row">
                                 <div class="col-lg-6 col-md-6 col-sm-6">
                                     {% if object.get_prev %}
@@ -94,7 +94,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div id="comment-section" class="row">
+                        <div class="row">
                             <div class="col-md-12 col-sm-12">
                                 <ul>
                                     {% for comment in object.get_comments %}
@@ -116,7 +116,7 @@
                         </div>
                         <div class="blog__details__comment mt-2">
                             <h4>Leave A Comment</h4>
-                            <form method="POST" action="{% url 'posts:comment' pk=object.pk %}">
+                            <form method="POST" action="{% url 'posts:comment' pk=object.pk %}#comment-section">
                                 {% csrf_token %}
                                 <div class="row">
                                     <div class="col-lg-4 col-md-4">

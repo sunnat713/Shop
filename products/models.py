@@ -82,6 +82,10 @@ class ProductModel(models.Model):
     long_description = RichTextUploadingField(verbose_name=_('long_description'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
 
+    def get_related_products(self):
+        # return self.category.products.exclude(pk=self.pk)
+        return ProductModel.objects.filter(category_id=self.category_id).exclude(pk=self.pk)
+
     def __str__(self):
         return self.title
 
@@ -100,4 +104,17 @@ class ProductModel(models.Model):
     class Meta:
         verbose_name = _('product')
         verbose_name_plural = _('products')
+
+
+class ProductImageModel(models.Model):
+    product = models.ForeignKey(ProductModel, on_delete=models.CASCADE, related_name='images', verbose_name=_('product'))
+    image = models.ImageField(upload_to='products', verbose_name=_('image'))
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))
+
+    def __str__(self):
+        return self.product.title
+
+    class Meta:
+        verbose_name = _('product image')
+        verbose_name_plural = _('product images')
 
