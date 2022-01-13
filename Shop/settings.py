@@ -1,4 +1,3 @@
-
 from pathlib import Path
 from django.utils.translation import gettext_lazy as _
 
@@ -12,6 +11,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     # 'registration',
+    'modeltranslation',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -82,7 +82,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 LANGUAGE_CODE = 'en'
 LANGUAGES = (
     ('en', _('English')),
@@ -109,7 +108,6 @@ LOCALE_PATHS = [
     BASE_DIR / 'locale'
 ]
 CKEDITOR_UPLOAD_PATH = 'uploads/'
-
 
 CKEDITOR_CONFIGS = {
     'default': {

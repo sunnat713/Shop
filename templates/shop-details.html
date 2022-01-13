@@ -66,7 +66,7 @@
                                 <i class="fa fa-star-o"></i>
                                 <span> - 5 Reviews</span>
                             </div>
-                            <h3>${{ object.get_price|floatformat:2 }}{% if object.is_discount %}<span>{{ object.price }}</span>{% endif %}</h3>
+                            <h3>${{ object.real_price }}{% if object.is_discount %}<span>{{ object.price }}</span>{% endif %}</h3>
                             <p>{{ object.short_description }}</p>
                             <div class="product__details__option">
                                 <div class="product__details__option__size">
@@ -168,7 +168,7 @@
                                     <i class="fa fa-star-o"></i>
                                     <i class="fa fa-star-o"></i>
                                 </div>
-                                <h5>${{ product.get_price }}
+                                <h5>${{ product.real_price }}
                                     {% if product.is_discount %}
                                         <strike class="small">{{ product.price }}</strike>
                                     {% endif %}

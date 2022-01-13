@@ -82,20 +82,20 @@
             </div>
             <div class="col-lg-7 col-md-7">
                 <nav class="header__menu mobile-menu">
-                    <ul class="d-flex navbar">
-                        <li class="nav-item {% if request.path == '/' %} active {% endif %}">
+                    <ul class="d-flex navbar">{% url 'pages:home' as home_url %}
+                        <li class="nav-item {% if request.path == home_url %} active {% endif %}">
                             <a href="{% url 'pages:home' %}">{% translate 'Home' %}</a>
                         </li>
-                        <li class="nav-item {% if request.path == '/products/' %}active{% endif %}">
+                        <li class="nav-item {% if '/products/' in request.path %}active{% endif %}">
                             <a href="{% url 'products:list' %}">{% translate 'Products' %}</a>
                         </li>
-                        <li class="nav-item {% if request.path == '/blog/' %} active {% endif %}">
+                        <li class="nav-item {% if '/blog/' in request.path %} active {% endif %}">
                             <a href="{% url 'posts:list' %}">{% translate 'Blog' %}</a>
                         </li>
-                        <li class="nav-item {% if request.path == '/about/' %} active{% endif %}">
+                        <li class="nav-item {% if '/about/' in request.path %} active{% endif %}">
                             <a href="{% url 'pages:about' %}">{% translate 'About' %}</a>
                         </li>
-                        <li class="nav-item {% if request.path == '/contact/' %} active {% endif %}">
+                        <li class="nav-item {% if '/contact/' in request.path %} active {% endif %}">
                             <a href="{% url 'pages:contact' %}">{% translate 'Contact' %}</a>
                         </li>
                     </ul>

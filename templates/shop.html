@@ -1,8 +1,13 @@
 {% extends 'layouts/base.html' %}
-{% load static %}
+{% load static mytags %}
+
+{% block extra_css %}
+    {#    <link rel="stylesheet" href="{% static 'css/ion.rangeSlider.css/ion.rangeSlider.min.css' %}">#}
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/css/ion.rangeSlider.min.css"/>
+{% endblock %}
 {% block content %}
-    {% block extra_css %}
-    {% endblock %}
     <!-- Breadcrumb Section Begin -->
     <section class="breadcrumb-option">
         <div class="container">
@@ -38,6 +43,22 @@
                         </div>
                         <div class="shop__sidebar__accordion">
                             <div class="accordion" id="accordionExample">
+                                <div class="card">
+                                    <div class="card-heading">
+                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
+                                    </div>
+                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
+                                        <div class="card-body">
+                                            <div class="shop__sidebar__price">
+
+
+                                                <input type="text" class="js-range-slider" name="my_range" value=""/>
+
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="card">
                                     <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseOne">Categories</a>
@@ -96,34 +117,16 @@
                                 </div>
                                 <div class="card">
                                     <div class="card-heading">
-                                        <a data-toggle="collapse" data-target="#collapseThree">Filter Price</a>
-                                    </div>
-                                    <div id="collapseThree" class="collapse show" data-parent="#accordionExample">
-                                        <div class="card-body">
-                                            <div class="shop__sidebar__price">
-                                                <ul>
-                                                    <li><a href="#">$0.00 - $50.00</a></li>
-                                                    <li><a href="#">$50.00 - $100.00</a></li>
-                                                    <li><a href="#">$100.00 - $150.00</a></li>
-                                                    <li><a href="#">$150.00 - $200.00</a></li>
-                                                    <li><a href="#">$200.00 - $250.00</a></li>
-                                                    <li><a href="#">250.00+</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card">
-                                    <div class="card-heading">
                                         <a data-toggle="collapse" data-target="#collapseFour">Size</a>
                                     </div>
                                     <div id="collapseFour" class="collapse show" data-parent="#accordionExample">
                                         <div class="card-body">
                                             <div class="shop__sidebar__size">
                                                 {% for size in sizes %}
-                                                <label>{{ size.title }}
-                                                    <input onclick="addUrlParameter('size', '{{ size.pk }}')" type="radio">
-                                                </label>
+                                                    <label>{{ size.title }}
+                                                        <input onclick="addUrlParameter('size', '{{ size.pk }}')"
+                                                               type="radio">
+                                                    </label>
                                                 {% endfor %}
                                             </div>
                                         </div>
@@ -137,9 +140,10 @@
                                         <div class="card-body">
                                             <div class="shop__sidebar__color">
                                                 {% for color in colors %}
-                                                <label style="background: {{ color.code }}">
-                                                    <input type="radio" onclick="addUrlParameter('color', '{{ color.pk }}')">
-                                                </label>
+                                                    <label style="background: {{ color.code }}">
+                                                        <input type="radio"
+                                                               onclick="addUrlParameter('color', '{{ color.pk }}')">
+                                                    </label>
                                                 {% endfor %}
                                             </div>
                                         </div>
@@ -163,8 +167,12 @@
                                     <p>Sort by Price:</p>
                                     <select onchange="addUrlParameter('sort', this.value)">
                                         <option value="">----</option>
-                                        <option {% if request.GET.sort == 'price' %} selected{% endif %} value="price">Low To High</option>
-                                        <option {% if request.GET.sort == '-price' %} selected{% endif %} value="-price">High To Low</option>
+                                        <option {% if request.GET.sort == 'price' %} selected{% endif %} value="price">
+                                            Low To High
+                                        </option>
+                                        <option {% if request.GET.sort == '-price' %} selected{% endif %}
+                                                                                      value="-price">High To Low
+                                        </option>
                                     </select>
                                 </div>
                             </div>
@@ -185,7 +193,8 @@
                                         <ul class="product__hover">
                                             <li><a href="#"><img src="{% static 'img/icon/heart.png' %}" alt=""></a>
                                             </li>
-                                            <li><a href="{% url 'products:detail' pk=product.pk %}"><img src="{% static 'img/icon/search.png' %}" alt=""></a>
+                                            <li><a href="{% url 'products:detail' pk=product.pk %}"><img
+                                                    src="{% static 'img/icon/search.png' %}" alt=""></a>
                                             </li>
                                         </ul>
                                     </div>
@@ -199,17 +208,17 @@
                                             <i class="fa fa-star-o"></i>
                                             <i class="fa fa-star-o"></i>
                                         </div>
-                                        <h5>${{ product.get_price }}
+                                        <h5>${{ product.real_price }}
                                             {% if product.is_discount %}
                                                 <strike class="small">{{ product.price }}</strike>
                                             {% endif %}
                                         </h5>
                                         <div class="product__color__select">
                                             {% for color in product.colors.all %}
-                                            <label style="background: {{ color.code }}">
-                                                <input type="radio">
-                                            </label>
-                                                {% endfor %}
+                                                <label style="background: {{ color.code }}">
+                                                    <input type="radio">
+                                                </label>
+                                            {% endfor %}
                                         </div>
                                     </div>
                                 </div>
@@ -220,7 +229,9 @@
                         <div class="col-lg-12">
                             <div class="product__pagination">
                                 {% for page in page_obj.paginator.page_range %}
-                                    <a style="cursor: pointer" {% if page == page_obj.number %} class="active" {% endif %} onclick="addUrlParameter('page', {{ page }})">{{ page }}</a>
+                                    <a style="cursor: pointer" {% if page == page_obj.number %}
+                                       class="active" {% endif %}
+                                       onclick="addUrlParameter('page', {{ page }})">{{ page }}</a>
                                 {% endfor %}
                             </div>
                         </div>
@@ -235,7 +246,7 @@
     <script>
         function addUrlParameter(name, value) {
             let searchParams = new URLSearchParams(window.location.search)
-            if (searchParams.has(name) && searchParams.get(name) === value ) {
+            if (searchParams.has(name) && searchParams.get(name) === value) {
                 searchParams.delete(name)
             } else {
                 searchParams.set(name, value)
@@ -243,4 +254,24 @@
             window.location.search = searchParams.toString()
         }
     </script>
+    {#    <script src="{% static 'js/ion.rangeSlider.js/ion.rangeSlider.min.js'%}"></script>#}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
+    <script>
+
+        $(".js-range-slider").ionRangeSlider({
+
+                type: "double",
+                grid: true,
+                min: {{ min_price }},
+                max: {{ max_price }},
+                from: {% get_price_url request 0 %},
+                to: {% get_price_url request 1 %},
+                prefix: "$",
+                onFinish(data) {
+                    let result = data.from.toString() + ';' + data.to.toString();
+                    addUrlParameter('price', result)
+
+                }})
+    </script>
+
 {% endblock %}

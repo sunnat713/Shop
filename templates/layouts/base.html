@@ -5,8 +5,8 @@
 
 <head>
     <meta charset="UTF-8">
-{#    <meta name="description" content="Male_Fashion Template">#}
-{#    <meta name="keywords" content="Male_Fashion, unica, creative, html">#}
+    {#    <meta name="description" content="Male_Fashion Template">#}
+    {#    <meta name="keywords" content="Male_Fashion, unica, creative, html">#}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Fashion</title>
@@ -24,7 +24,8 @@
     <link rel="stylesheet" href="{% static 'css/owl.carousel.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/slicknav.min.css' %}" type="text/css">
     <link rel="stylesheet" href="{% static 'css/style.css' %}" type="text/css">
-    {% block extra_js %}{% endblock %}
+
+    {% block extra_css %}{% endblock %}
 </head>
 
 <body>
@@ -61,6 +62,7 @@
 <script src="{% static 'js/mixitup.min.js' %}"></script>
 <script src="{% static 'js/owl.carousel.min.js' %}"></script>
 <script src="{% static 'js/main.js' %}"></script>
+{% block extra_js %}{% endblock %}
 </body>
 
 </html>

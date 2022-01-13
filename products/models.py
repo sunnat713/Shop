@@ -74,6 +74,7 @@ class ProductModel(models.Model):
     title = models.CharField(max_length=255, verbose_name=_('title'))
     image = models.ImageField(upload_to='products', verbose_name=_('image'))
     price = models.FloatField(verbose_name=_('price'))
+    real_price = models.FloatField(verbose_name=_("real price"), default=0)
     discount = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0), MaxValueValidator(100)],
                                            verbose_name=_('discount'))
     sizes = models.ManyToManyField(ProductSizeModel, related_name='products')
@@ -91,11 +92,6 @@ class ProductModel(models.Model):
 
     def is_discount(self):
         return self.discount != 0
-
-    def get_price(self):
-        if self.is_discount():
-            return self.price - self.price * self.discount / 100
-        return self.price
 
     def is_new(self):
         diff = datetime.now(pytz.timezone('Asia/Tashkent')) - self.created_at
