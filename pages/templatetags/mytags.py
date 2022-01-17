@@ -21,3 +21,9 @@ def get_price_url(request, x):
         return price.split(';')[x]
     return "null"
 
+
+@register.filter
+def in_izb(product, request):
+    return request.user in product.izb.all()
+
+

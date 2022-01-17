@@ -1,4 +1,6 @@
 from datetime import datetime
+
+from django.contrib.auth.models import User
 from django.utils.translation import gettext_lazy as _
 import pytz
 from django.db import models
@@ -79,6 +81,7 @@ class ProductModel(models.Model):
                                            verbose_name=_('discount'))
     sizes = models.ManyToManyField(ProductSizeModel, related_name='products')
     colors = models.ManyToManyField(ProductColorModel, related_name='products')
+    izb = models.ManyToManyField(User, related_name='izb', verbose_name='wishlist')
     short_description = models.TextField(verbose_name=_('short_description'))
     long_description = RichTextUploadingField(verbose_name=_('long_description'))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created_at'))

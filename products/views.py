@@ -1,5 +1,8 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Min, Max
-from django.views.generic import ListView, DetailView
+from django.shortcuts import get_object_or_404, redirect
+from django.views.generic import ListView, DetailView, TemplateView
 from .models import *
 
 
@@ -54,13 +57,37 @@ class ProductsListView(ListView):
         context['tags'] = ProductTagModel.objects.all()
         context['sizes'] = ProductSizeModel.objects.all()
         context['colors'] = ProductColorModel.objects.all()
-
-        context['min_price'], context['max_price'] = ProductModel.objects.aggregate(
+        min_price, max_price = ProductModel.objects.aggregate(
             Min('real_price'),
             Max('real_price')).values()
+        context['min_price'], context['max_price'] = int(min_price), int(max_price)
+        # context['min_price'], context['max_price'] = list(map(int,ProductModel.objects.aggregate(
+        #     Min('real_price'),
+        #     Max('real_price')).values()))
         return context
 
 
 class ProductsDetailView(DetailView):
     template_name = 'shop-details.html'
     model = ProductModel
+
+
+class IzbListView(LoginRequiredMixin, ListView):
+    template_name = 'izb.html'
+
+    def get_queryset(self):
+        return self.request.user.izb.all()
+
+
+@login_required
+def add_izb(request, pk):
+    product = get_object_or_404(ProductModel, pk=pk)
+    user = request.user
+    if user in product.izb.all():
+        product.izb.remove(user)
+    else:
+        product.izb.add(user)
+
+    return redirect(request.GET.get('next', '/'))
+
+
