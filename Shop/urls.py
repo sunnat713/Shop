@@ -26,9 +26,11 @@ urlpatterns = [
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('blog/', include('posts.urls', namespace='posts')),
+    path('profile/', include('users.urls', namespace='profile')),
     path('products/', include('products.urls', namespace='products')),
     path('', include('pages.urls', namespace='pages')),
-    path('accounts/', include('registration.backends.default.urls')),
+    path('accounts/', include('auth.urls')),
+    path('orders/', include('orders.urls', namespace='orders')),
 )
 
 

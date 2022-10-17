@@ -18,14 +18,16 @@
                     {% endif %}
                 </a>
             </li>
-            <li><a href="{% url 'products:detail' pk=product.pk %}"><img
-                    src="{% static 'img/icon/search.png' %}" alt=""></a>
+            <li>
+                <a href="{% url 'products:detail' pk=product.pk %}">
+                    <img src="{% static 'img/icon/search.png' %}" alt="">
+                </a>
             </li>
         </ul>
     </div>
     <div class="product__item__text">
         <h6>{{ product.title }}</h6>
-        <a href="#" class="add-cart">+ Add To Cart</a>
+        <a href="{% url 'products:add-to-cart' pk=product.pk %}?next={{ request.path }}?{{ request.GET.urlencode }}" class="add-cart">{% if product|in_cart:request %}- Remove from cart{% else %}+ Add To Cart{% endif %}</a>
         <div class="rating">
             <i class="fa fa-star-o"></i>
             <i class="fa fa-star-o"></i>

@@ -181,7 +181,7 @@
                     <div class="row">
                         {% for product in object_list %}
                             <div class="col-lg-4 col-md-6 col-sm-6">
-         {% include 'layouts/product.html' %}
+                                {% include 'layouts/product.html' %}
                             </div>
                         {% endfor %}
                     </div>
@@ -220,17 +220,18 @@
 
         $(".js-range-slider").ionRangeSlider({
 
-                type: "double",
-                grid: true,
-                min: {{ min_price }},
-                max: {{ max_price }},
-                from: {% get_price_url request 0 %},
-                to: {% get_price_url request 1 %},
-                prefix: "$",
-                onFinish(data) {
-                    let result = data.from.toString() + ';' + data.to.toString();
-                    addUrlParameter('price', result)
+            type: "double",
+            grid: true,
+            min: {{ min_price }},
+            max: {{ max_price }},
+            from: {% get_price_url request 0 %},
+            to: {% get_price_url request 1 %},
+            prefix: "$",
+            onFinish(data) {
+                let result = data.from.toString() + ';' + data.to.toString();
+                addUrlParameter('price', result)
 
-                }})
+            }
+        })
     </script>
 {% endblock %}

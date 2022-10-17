@@ -79,6 +79,13 @@ class IzbListView(LoginRequiredMixin, ListView):
         return self.request.user.izb.all()
 
 
+class CartListView( ListView):
+    template_name = 'cart.html'
+
+    def get_queryset(self):
+        return ProductModel.get_from_cart(self.request)
+
+
 @login_required
 def add_izb(request, pk):
     product = get_object_or_404(ProductModel, pk=pk)
@@ -91,3 +98,12 @@ def add_izb(request, pk):
     return redirect(request.GET.get('next', '/'))
 
 
+def add_to_cart(request, pk):
+    cart = request.session.get('cart', [])
+    if pk in cart:
+        cart.remove(pk)
+    else:
+        cart.append(pk)
+    request.session['cart'] = cart
+
+    return redirect(request.GET.get('next', '/'))

@@ -7,7 +7,7 @@ class ProfileModel(models.Model):
     first_name = models.CharField(max_length=30, null=True, blank=True)
     last_name = models.CharField(max_length=30, null=True, blank=True)
     email = models.EmailField(null=True, blank=True)
-    phone = models.IntegerField(max_length=30, null=True, blank=True)
+    phone = models.IntegerField(null=True, blank=True)
     country = models.CharField(max_length=30, null=True, blank=True)
     address1 = models.CharField(max_length=50, null=True, blank=True)
     address2 = models.CharField(max_length=30, null=True, blank=True)

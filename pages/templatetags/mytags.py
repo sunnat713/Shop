@@ -1,4 +1,8 @@
 from django import template
+from django.db.models import Sum
+
+from pages.utils import get_cart_length
+from products.models import ProductModel
 
 register = template.Library()
 
@@ -27,3 +31,19 @@ def in_izb(product, request):
     return request.user in product.izb.all()
 
 
+@register.simple_tag
+def cart_count(request):
+    return get_cart_length(request)
+
+
+@register.simple_tag
+def cart_price(request):
+    if get_cart_length(request) == 0:
+        return 0
+    price = ProductModel.get_from_cart(request).aggregate(Sum('real_price'))['real_price__sum']
+    return price
+
+
+@register.filter
+def in_cart(product, request):
+    return product.pk in request.session.get('cart', [])

@@ -93,6 +93,12 @@ class ProductModel(models.Model):
     def __str__(self):
         return self.title
 
+    @staticmethod
+    def get_from_cart(request):
+        cart = request.session.get('cart', [])
+        price = ProductModel.objects.filter(pk__in=cart)
+        return price
+
     def is_discount(self):
         return self.discount != 0
 
